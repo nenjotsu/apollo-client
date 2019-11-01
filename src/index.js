@@ -16,12 +16,14 @@ import { getCookie } from './helpers/cookie';
 
 import 'antd/dist/antd.css';
 
+const domain = process.env.NODE_ENV === 'production' ? '18.139.133.178' : 'localhost';
+
 const httpLink = new HttpLink({
-  uri: 'http://localhost:8000/graphql',
+  uri: `http://${domain}:8000/graphql`,
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:8000/graphql`,
+  uri: `ws://${domain}:8000/graphql`,
   options: {
     reconnect: true,
   },
