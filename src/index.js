@@ -16,7 +16,7 @@ import { getCookie } from './helpers/cookie';
 
 import 'antd/dist/antd.css';
 
-const domain = process.env.NODE_ENV === 'production' ? 'nenjovalente' : 'localhost';
+const domain = process.env.NODE_ENV === 'production' ? 'nenjovalente.com' : 'localhost';
 const secure = process.env.NODE_ENV === 'production' ? 's' : '';
 
 const httpLink = new HttpLink({
