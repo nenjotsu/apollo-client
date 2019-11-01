@@ -26,7 +26,9 @@
     "subscriptions-transport-ws": "^0.9.15"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3000 react-scripts start",
+    "start:prod": "PORT=80 react-scripts start",
+    "deploy": "pm2 start npm --no-automation --name freest -- run start:prod",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom --passWithNoTests",
     "eject": "react-scripts eject"
