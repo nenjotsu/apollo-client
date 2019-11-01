@@ -8,9 +8,13 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { onError } from 'apollo-link-error';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { CookiesProvider } from 'react-cookie';
 
 import App from './components/App';
 import { signOut } from './components/SignOut';
+import { getCookie } from './helpers/cookie';
+
+import 'antd/dist/antd.css';
 
 const httpLink = new HttpLink({
   uri: 'http://localhost:8000/graphql',
@@ -26,9 +30,7 @@ const wsLink = new WebSocketLink({
 const terminatingLink = split(
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
-    return (
-      kind === 'OperationDefinition' && operation === 'subscription'
-    );
+    return kind === 'OperationDefinition' && operation === 'subscription';
   },
   wsLink,
   httpLink,
@@ -36,7 +38,7 @@ const terminatingLink = split(
 
 const authLink = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => {
-    const token = localStorage.getItem('token');
+    const token = getCookie('token');
 
     if (token) {
       headers = { ...headers, 'x-token': token };
@@ -79,7 +81,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
   </ApolloProvider>,
   document.getElementById('root'),
 );
