@@ -1,0 +1,54 @@
+.backdrop {
+  width: 100%;
+}
+
+.account {
+  float: right;
+  position: relative;
+  margin-right: 20px;
+}
+
+.login-form {
+  max-width: 300px;
+  padding: 20px !important;
+  margin: 30% auto !important;
+}
+
+.signup-form {
+  max-width: 700px;
+  padding: 20px !important;
+  margin: 15% auto !important;
+}
+
+.email-confirm-message {
+  max-width: 500px;
+  padding: 20px !important;
+  margin: 20% auto !important;
+  background: #ddd;
+
+  -webkit-box-shadow: 0px 32px 63px -50px rgba(28, 28, 28, 1);
+  -moz-box-shadow: 0px 32px 63px -50px rgba(28, 28, 28, 1);
+  box-shadow: 0px 32px 63px -50px rgba(28, 28, 28, 1);
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.ant-input {
+  margin-bottom: 20px !important;
+  min-height: 40px !important;
+}
+
+.bottom-20 {
+  margin-bottom: 20px !important;
+}
+
+.ant-calendar-picker-clear,
+.ant-calendar-picker-icon {
+  top: 34% !important;
+}
