@@ -7,6 +7,22 @@ export const GET_ME = gql`
       username
       email
       role
+      unitNo
+    }
+    myPayments {
+      orNo
+      unitNo
+      amount
+      remarks
+      paymentType
+      datePayment
+      dateOfCheck
+      datePosted
+      checkStatus
+      checkNo
+      bankName
+      bankBranch
+      isConfirmed
     }
   }
 `;
