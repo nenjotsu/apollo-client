@@ -158,6 +158,7 @@ function SignUpForm(props) {
     >
       {(signUp, { data, loading, error }) => (
         <form className="signup-form">
+          <h2>Highview Hills Phase 5</h2>
           <h3>Register</h3>
           <Row gutter={30}>
             <Col sm={24} md={12}>

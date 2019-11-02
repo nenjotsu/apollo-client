@@ -79,6 +79,7 @@ function SignInForm(props) {
     <Mutation mutation={SIGN_IN} variables={{ login, password }}>
       {(signIn, { data, loading, error }) => (
         <form className="login-form" onSubmit={onSubmit(signIn)}>
+          <h2>Highview Hills Phase 5</h2>
           <h3>Sign In</h3>
           <input
             className="ant-input"
