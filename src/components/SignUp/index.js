@@ -30,8 +30,8 @@ const SIGN_UP = gql`
     $residencyType: String!
     $firstName: String!
     $lastName: String!
-    $dateTurnedOver: Date
-    $dateOfBirth: Date!
+    $dateTurnedOver: DateTime
+    $dateOfBirth: DateTime!
   ) {
     signUp(
       username: $username
@@ -75,8 +75,8 @@ function SignUpForm(props) {
   const [residencyType, setResidencyType] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
-  const [dateTurnedOver, setDateTurnedOver] = React.useState('');
   const [dateOfBirth, setDateOfBirth] = React.useState('');
+  const [dateTurnedOver, setDateTurnedOver] = React.useState(null);
 
   const handleChangeInput = funcSetter => event => {
     const { value } = event.target;
@@ -136,7 +136,6 @@ function SignUpForm(props) {
     residencyType === '' ||
     firstName === '' ||
     lastName === '' ||
-    dateTurnedOver === '' ||
     dateOfBirth === '';
 
   return (

@@ -13,6 +13,10 @@ import * as routes from '../../constants/routes';
 import ErrorMessage from '../Error';
 import Backdrop from '../../images/patrick-perkins-3wylDrjxH-E-unsplash.jpg';
 
+import _get from 'lodash/get';
+
+import { checkTokenExpiredInSignIn } from '../../helpers/cookie';
+
 const responsive = {
   sm: {
     span: 24,
@@ -42,7 +46,10 @@ const SignInPage = ({ history, refetch }) => (
   </Row>
 );
 
-function SignInForm(props) {
+function SignInForm({ history, refetch }) {
+  React.useEffect(() => {
+    checkTokenExpiredInSignIn(history);
+  }, []);
   const [_, setCookie] = useCookies(['token']);
   const [login, setLogin] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -66,8 +73,10 @@ function SignInForm(props) {
       });
       setLogin('');
       setPassword('');
-      await props.refetch();
-      props.history.push(routes.LANDING);
+      if (_get(data, 'signIn.token')) {
+        history.push(routes.LANDING);
+      }
+      await refetch();
     });
 
     event.preventDefault();

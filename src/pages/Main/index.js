@@ -1,10 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Layout, Menu, Breadcrumb, Icon, Dropdown } from 'antd';
 import { checkTokenExpired } from '../../helpers/cookie';
+import * as routes from '../../constants/routes';
+import withSession from '../../components/Session/withSession';
 import _get from 'lodash/get';
 import history from '../../constants/history';
 import SignOut from '../../components/SignOut';
 import SOAPage from '../SOA';
+import UnitPage from '../Unit';
+import SingleUnitPage from '../Unit/Single';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -17,8 +22,11 @@ const menu = (
   </Menu>
 );
 
-function SiderDemo() {
+function SiderDemo({ session, children }) {
   const [collapsed, setCollapsed] = React.useState(false);
+  const isAdmin = _get(session, 'me.role') === 'admin';
+
+  console.log('isAdmin', isAdmin);
 
   React.useEffect(() => {
     checkTokenExpired(history);
@@ -32,16 +40,22 @@ function SiderDemo() {
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
         <div className="logo" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+        <Menu theme="dark" defaultSelectedKeys={[]} mode="inline">
           <Menu.Item key="1">
-            <Icon type="pie-chart" />
-            <span>Option 1</span>
-          </Menu.Item>
-          <Menu.Item key="2">
             <Icon type="desktop" />
-            <span>Option 2</span>
+            <span>
+              <Link to={routes.SOA}>SOA</Link>
+            </span>
           </Menu.Item>
-          <SubMenu
+          {isAdmin && (
+            <Menu.Item key="2">
+              <Icon type="pie-chart" />
+              <span>
+                <Link to={routes.UNIT}>Unit Owners</Link>
+              </span>
+            </Menu.Item>
+          )}
+          {/* <SubMenu
             key="sub1"
             title={
               <span>
@@ -69,7 +83,7 @@ function SiderDemo() {
           <Menu.Item key="9">
             <Icon type="file" />
             <span>File</span>
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
       </Sider>
       <Layout>
@@ -85,7 +99,18 @@ function SiderDemo() {
             <Breadcrumb.Item>User</Breadcrumb.Item>
             {/* <Breadcrumb.Item>{_get(session, 'me.username')}</Breadcrumb.Item> */}
           </Breadcrumb>
-          <SOAPage />
+          {children}
+          {/* <Router history={history}>
+            <React.Fragment>
+              <Route exact path={routes.SOA} component={() => <SOAPage refetch={refetch} />} />
+              <Route exact path={routes.UNIT} component={() => <UnitPage refetch={refetch} />} />
+              <Route
+                exact
+                path={routes.SINGLE_UNIT}
+                component={() => <SingleUnitPage refetch={refetch} />}
+              />
+            </React.Fragment>
+          </Router> */}
         </Content>
         <Footer style={{ textAlign: 'center' }}>by nenjotsu@gmail.com</Footer>
       </Layout>
@@ -93,4 +118,4 @@ function SiderDemo() {
   );
 }
 
-export default SiderDemo;
+export default withSession(SiderDemo);

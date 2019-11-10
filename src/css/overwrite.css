@@ -1,3 +1,12 @@
+a:hover {
+  color: #ddd !important;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected,
+.ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected {
+  background-color: #156bbb !important;
+}
+
 .backdrop {
   width: 100%;
 }
