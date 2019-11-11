@@ -16,9 +16,7 @@ import { getCookie } from './helpers/cookie';
 
 import 'antd/dist/antd.css';
 
-// const domain = 'nenjovalente.com';
-const domain = 'localhost';
-// const secure = process.env.NODE_ENV === 'production' ? 's' : '';
+const domain = process.env.REACT_APP_NODE_ENV === 'production' ? 'nenjovalente.com' : 'localhost';
 
 const httpLink = new HttpLink({
   uri: `http://${domain}:8000/graphql`,
