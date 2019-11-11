@@ -66,7 +66,12 @@ export const checkTokenExpiredInSignIn = history => {
       deleteCookie('token');
     }
     if (!isJwtExpired && history.location.pathname !== routes.LANDING) {
-      history.push(routes.LANDING);
+      if (decoded.role === 'admin') {
+        history.push(routes.UNIT);
+      }
+      if (decoded.role === 'standard') {
+        history.push(routes.SOA);
+      }
     }
   }
 };

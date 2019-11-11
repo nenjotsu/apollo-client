@@ -96,7 +96,7 @@ function SiderDemo({ session, children }) {
         </Header>
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
+            {/* <Breadcrumb.Item>User</Breadcrumb.Item> */}
             {/* <Breadcrumb.Item>{_get(session, 'me.username')}</Breadcrumb.Item> */}
           </Breadcrumb>
           {children}

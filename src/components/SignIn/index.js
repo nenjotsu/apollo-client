@@ -29,6 +29,7 @@ const SIGN_IN = gql`
     signIn(login: $login, password: $password) {
       token
       message
+      role
     }
   }
 `;
@@ -73,8 +74,13 @@ function SignInForm({ history, refetch }) {
       });
       setLogin('');
       setPassword('');
-      if (_get(data, 'signIn.token')) {
-        history.push(routes.LANDING);
+      const role = _get(data, 'signIn.role', 'standard');
+      debugger;
+      if (role === 'admin') {
+        history.push(routes.UNIT);
+      }
+      if (role === 'standard') {
+        history.push(routes.SOA);
       }
       await refetch();
     });
