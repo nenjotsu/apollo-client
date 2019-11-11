@@ -88,14 +88,25 @@ function SOAPage({ session }) {
   ];
 
   return (
-    <section>
-      <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-        <h1>Statement of Account for Unit No: "{_get(session, 'me.unitNo', '')}"</h1>
+    <section style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+      <div
+        style={{
+          padding: 24,
+          background: '#f7f7f7',
+          minHeight: 200,
+          marginBottom: 20,
+          boxShadow: '0px 2px 5px #d0d0d0',
+          borderRadius: 5,
+        }}
+      >
+        <h1>Your Statement of Account Unit No: {_get(session, 'me.unitNo', '')}</h1>
+        <h3>Months: {monthsDuration}</h3>
         <h2>Total Payments: PHP {totalPayment}</h2>
-        <h2>Total Balance: PHP {totalCollectibles}</h2>
-        <h2>Months: {monthsDuration}</h2>
-        <Table rowKey="id" dataSource={session.myPayments} columns={columns} />
+        <h2 style={{ color: totalCollectibles > 0 ? '#E91E63' : '#4CAF50' }}>
+          Total Balance: PHP {totalCollectibles}
+        </h2>
       </div>
+      <Table rowKey="id" dataSource={session.myPayments} columns={columns} />
     </section>
   );
 }

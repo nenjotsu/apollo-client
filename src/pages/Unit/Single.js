@@ -125,7 +125,7 @@ function SOAPage({ session, location }) {
         const totalPayments = _sumBy(payments, 'amount');
         setTotalPayment(totalPayments);
         return (
-          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+          <section style={{ padding: 24, background: '#fff', minHeight: 360 }}>
             <h1>Highview Hills Phase 5</h1>
             <h3>Home Owners Association</h3>
             {queryParams[1] && <OwnerInfo unitNo={queryParams[1]} />}
@@ -163,7 +163,7 @@ function SOAPage({ session, location }) {
             <button className="ant-btn bottom-20" onClick={handlePrint}>
               <Icon type="printer" /> Print
             </button>
-          </div>
+          </section>
         );
       }}
     </Query>
