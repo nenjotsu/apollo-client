@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 
 import Navigation from '../Navigation';
 import LandingPage from '../Landing';
@@ -11,6 +11,9 @@ import EmailConfirmPage from '../EmailConfirm';
 import withSession from '../Session/withSession';
 
 import MainPage from '../../pages/Main';
+import UnitPage from '../../pages/Unit';
+import SingleUnitPage from '../../pages/Unit/Single';
+import SOAPage from '../../pages/SOA';
 
 import * as routes from '../../constants/routes';
 import history from '../../constants/history';
@@ -19,7 +22,6 @@ import '../../css/overwrite.css';
 const App = ({ session, refetch }) => (
   <Router history={history}>
     <React.Fragment>
-      <Route exact path={routes.LANDING} component={() => <MainPage />} />
       <Route exact path={routes.SIGN_UP} component={() => <SignUpPage refetch={refetch} />} />
       <Route exact path={routes.SIGN_IN} component={() => <SignInPage refetch={refetch} />} />
       <Route
@@ -28,7 +30,9 @@ const App = ({ session, refetch }) => (
         component={() => <EmailConfirmPage refetch={refetch} />}
       />
       <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
-      <Route exact path={routes.ADMIN} component={() => <AdminPage />} />
+      {/* <Route exact path={routes.ADMIN} component={() => <AdminPage />} /> */}
+
+      <Route path={routes.LANDING} component={() => <LandingPage />} />
     </React.Fragment>
   </Router>
 );

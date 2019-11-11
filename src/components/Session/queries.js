@@ -8,8 +8,10 @@ export const GET_ME = gql`
       email
       role
       unitNo
+      dateTurnedOver
     }
     myPayments {
+      id
       orNo
       unitNo
       amount

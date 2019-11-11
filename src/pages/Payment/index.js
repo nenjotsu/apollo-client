@@ -15,7 +15,7 @@ import DatePicker from 'antd/lib/date-picker';
 import message from 'antd/lib/message';
 
 import * as routes from '../../constants/routes';
-import ErrorMessage from '../Error';
+import ErrorMessage from '../../components/Error';
 import Backdrop from '../../images/michal-kubalczyk-bCNzxvvbF_U-unsplash.jpg';
 import { allUnits } from './data.units';
 

@@ -35,24 +35,43 @@ export const getAccessToken = () => {
   return null;
 };
 
+export const hasAccessToken = () => {
+  const accessToken = getCookie('token');
+  if (accessToken) {
+    return true;
+  }
+  return false;
+};
+
 export const checkTokenExpired = history => {
+  const TOKEN = getAccessToken();
+
+  if (TOKEN) {
+    const decoded = jsonwebtoken.decode(TOKEN);
+    const isJwtExpired = isJwtTokenExpired(decoded.exp);
+    if (isJwtExpired) {
+      deleteCookie('token');
+    }
+  } else {
+    history.push(routes.SIGN_IN);
+  }
+};
+
+export const checkTokenExpiredInSignIn = history => {
   const TOKEN = getAccessToken();
   if (TOKEN) {
     const decoded = jsonwebtoken.decode(TOKEN);
     const isJwtExpired = isJwtTokenExpired(decoded.exp);
     if (isJwtExpired) {
-      console.log('expired');
       deleteCookie('token');
-      // cookieBroadcastMessage(CLEAR_COOKIE);
-      // checkTenantUserId();
-      // clearAndRedirect();
     }
-  } else {
-    console.log('no token');
-    // window.location = '/signin';
-
-    history.push(routes.SIGN_IN);
-    // cookieBroadcastMessage(CLEAR_COOKIE);
-    // clearAndRedirect();
+    if (!isJwtExpired && history.location.pathname !== routes.LANDING) {
+      if (decoded.role === 'admin') {
+        history.push(routes.UNIT);
+      }
+      if (decoded.role === 'standard') {
+        history.push(routes.SOA);
+      }
+    }
   }
 };

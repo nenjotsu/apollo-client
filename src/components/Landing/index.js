@@ -1,16 +1,30 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import withAuthorization from '../Session/withAuthorization';
+import * as routes from '../../constants/routes';
+import hoaRoutes from '../App/routes';
+import AdminPage from '../Admin';
+import MainPage from '../../pages/Main';
+import SOAPage from '../../pages/SOA';
 
-import withSession from '../Session/withSession';
-
-import { MessageCreate, Messages } from '../Message';
-
-const Landing = ({ session }) => (
-  <div>
-    <h2>Landing Page</h2>
-
-    {session && session.me && <MessageCreate />}
-    <Messages limit={2} />
-  </div>
+const LandingPage = () => (
+  <Switch>
+    <Route
+      path={routes.LANDING}
+      component={() => (
+        <MainPage>
+          {hoaRoutes().map(route => (
+            <Route
+              key={route.id}
+              path={route.path}
+              component={route.component}
+              exact={route.exact}
+            />
+          ))}
+        </MainPage>
+      )}
+    />
+  </Switch>
 );
 
-export default withSession(Landing);
+export default withAuthorization(session => session && session.me)(LandingPage);
