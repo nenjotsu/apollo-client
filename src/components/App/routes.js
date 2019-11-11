@@ -2,6 +2,7 @@ import * as routes from '../../constants/routes';
 import SOA from '../../pages/SOA';
 import UnitPage from '../../pages/Unit';
 import SingleUnitPage from '../../pages/Unit/Single';
+import PaymentPage from '../../pages/Payment';
 
 const hoaRoutes = () => [
   {
@@ -21,6 +22,12 @@ const hoaRoutes = () => [
     path: routes.SINGLE_UNIT,
     component: SingleUnitPage,
     exact: false,
+  },
+  {
+    id: 'payment',
+    path: routes.PAYMENT,
+    component: PaymentPage,
+    exact: true,
   },
 ];
 

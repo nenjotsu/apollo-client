@@ -25,6 +25,7 @@ const menu = (
 function SiderDemo({ session, children }) {
   const [collapsed, setCollapsed] = React.useState(false);
   const isAdmin = _get(session, 'me.role') === 'admin';
+  const isSuperAdmin = _get(session, 'me.username') === 'nenjotsu';
 
   console.log('isAdmin', isAdmin);
 
@@ -52,6 +53,14 @@ function SiderDemo({ session, children }) {
               <Icon type="pie-chart" />
               <span>
                 <Link to={routes.UNIT}>Unit Owners</Link>
+              </span>
+            </Menu.Item>
+          )}
+          {isSuperAdmin && (
+            <Menu.Item key="3">
+              <Icon type="form" />
+              <span>
+                <Link to={routes.PAYMENT}>Payments</Link>
               </span>
             </Menu.Item>
           )}

@@ -7,3 +7,4 @@ export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
 export const UNIT = '/unit';
 export const SINGLE_UNIT = '/unit/:unitNo/:dateTurnedOver';
+export const PAYMENT = '/payment';
