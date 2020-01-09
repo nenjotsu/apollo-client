@@ -1,41 +1,21 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import moment from 'moment';
-import gql from 'graphql-tag';
 
-import { Layout, Menu, Table, Breadcrumb, Icon, Dropdown } from 'antd';
+import { Layout, Menu, Table, Button, Icon, message } from 'antd';
 import { checkTokenExpired } from '../../helpers/cookie';
-import _get from 'lodash/get';
-import _sumBy from 'lodash/sumBy';
+import { get, sumBy } from 'lodash';
 import withSession from '../../components/Session/withSession';
 import history from '../../constants/history';
 import ErrorMessage from '../../components/Error';
 import Loading from '../../components/Loading';
 import OwnerInfo from './OwnerInfo';
-
-const GET_PAYMENTS = gql`
-  query($unitNo: String!) {
-    payments(unitNo: $unitNo) {
-      id
-      orNo
-      unitNo
-      amount
-      remarks
-      paymentType
-      datePayment
-      dateOfCheck
-      datePosted
-      checkStatus
-      checkNo
-      bankName
-      bankBranch
-      isConfirmed
-    }
-  }
-`;
+import { GET_PAYMENTS, DELETE_PAYMENT } from './query';
+import { getInMons } from '../../helpers/strings';
 
 function SOAPage({ session, location }) {
+  const isAdmin = get(session, 'me.role') === 'admin';
   const queryParams = location.pathname.replace('/', '').split('/');
   const [totalPayment, setTotalPayment] = React.useState(0);
   const [totalCollectibles, setTotalCollectibles] = React.useState(0);
@@ -45,14 +25,16 @@ function SOAPage({ session, location }) {
   React.useEffect(() => {
     checkTokenExpired(history);
     const dateTurnedOverRaw = queryParams[2];
-    const today = moment();
+    const today = moment(new Date());
     const dateTurnedOver = moment(dateTurnedOverRaw);
     const inMs = today.diff(dateTurnedOver);
     var duration = moment.duration({ milliseconds: inMs });
-    setmonthsDuration(duration._data.months);
-    const divisor = (duration._data.months + 2) * 600 - (totalPayment - 1000);
+    const inMons = getInMons(duration._data);
+    setmonthsDuration(inMons);
+    const divisor = (inMons + 2) * 600 - (totalPayment - 1000);
+    console.log('divisor', divisor);
     setTotalCollectibles(divisor);
-  }, [totalPayment]);
+  }, [totalPayment, totalCollectibles, monthsDuration]);
 
   const handleBackToUnit = event => {
     event.preventDefault();
@@ -62,6 +44,20 @@ function SOAPage({ session, location }) {
   const handlePrint = event => {
     event.preventDefault();
     window.print();
+  };
+
+  const handleDelete = deletePayment => event => {
+    event.preventDefault();
+    deletePayment().then(async ({ data }) => {
+      if (data.deletePayment) {
+        message.success('Successfully deleted', 10);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        message.error('Error in deleting', 10);
+      }
+    });
   };
 
   const columns = [
@@ -105,6 +101,28 @@ function SOAPage({ session, location }) {
       dataIndex: 'unitNo',
       key: 'unitNo',
     },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      render: (_, record) => {
+        if (!isAdmin) {
+          return null;
+        }
+        return (
+          <Mutation
+            mutation={DELETE_PAYMENT}
+            variables={{
+              id: record.id,
+            }}
+          >
+            {(deletePayment, { data, loading, error }) => (
+              <Button onClick={handleDelete(deletePayment)}>Delete</Button>
+            )}
+          </Mutation>
+        );
+      },
+    },
   ];
 
   return (
@@ -122,7 +140,7 @@ function SOAPage({ session, location }) {
         if (loading || !payments) {
           return <Loading />;
         }
-        const totalPayments = _sumBy(payments, 'amount');
+        const totalPayments = sumBy(payments, 'amount');
         setTotalPayment(totalPayments);
         return (
           <section style={{ padding: 24, background: '#fff', minHeight: 360 }}>

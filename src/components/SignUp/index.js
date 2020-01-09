@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import _has from 'lodash/has';
+import { has, get } from 'lodash';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
@@ -17,7 +17,7 @@ import message from 'antd/lib/message';
 import * as routes from '../../constants/routes';
 import ErrorMessage from '../Error';
 import Backdrop from '../../images/michal-kubalczyk-bCNzxvvbF_U-unsplash.jpg';
-import { allUnits } from './data.units';
+import { allUnits } from '../../constants/data.units';
 
 const SIGN_UP = gql`
   mutation(
@@ -256,8 +256,9 @@ function SignUpForm(props) {
                 onChange={handleChangeResidencyType}
               >
                 <Radio.Button value="resident">Resident</Radio.Button>
-                <Radio.Button value="owner">Owner</Radio.Button>
+                {/* {isAdmin && <Radio.Button value="owner">Owner</Radio.Button>} */}
                 <Radio.Button value="lesse">Lesse</Radio.Button>
+                <Radio.Button value="owner">Owner</Radio.Button>
               </Radio.Group>
 
               {residencyType === 'owner' && (
@@ -288,7 +289,7 @@ function SignUpForm(props) {
           </Button>
 
           {error && <ErrorMessage error={error} />}
-          {_has(data, 'signUp.message') && (
+          {has(data, 'signUp.message') && (
             <Alert
               className="bottom-20"
               message="Success Message"

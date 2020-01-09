@@ -1,8 +1,5 @@
 import React from 'react';
-
-// import React, { Component, Fragment } from 'react';
 import moment from 'moment';
-import gql from 'graphql-tag';
 
 import { Layout, Menu, Table, Breadcrumb, Icon, Dropdown } from 'antd';
 import { checkTokenExpired } from '../../helpers/cookie';
@@ -10,9 +7,7 @@ import _get from 'lodash/get';
 import _sumBy from 'lodash/sumBy';
 import withSession from '../../components/Session/withSession';
 import history from '../../constants/history';
-
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
+import { getInMons } from '../../helpers/strings';
 
 function SOAPage({ session }) {
   const [collapsed, setCollapsed] = React.useState(false);
@@ -22,27 +17,30 @@ function SOAPage({ session }) {
 
   React.useEffect(() => {
     checkTokenExpired(history);
-
-    // session.myPayments;
   }, []);
   React.useEffect(() => {
     const myTotalPayments = _sumBy(session.myPayments, 'amount');
+    console.log('myTotalPayments', myTotalPayments);
     setTotalPayment(myTotalPayments);
 
     const dateTurnedOverRaw = _get(session, 'me.dateTurnedOver');
+    console.log('dateTurnedOverRaw', dateTurnedOverRaw);
+
     const today = moment();
+    console.log('today', today);
     const dateTurnedOver = moment(dateTurnedOverRaw);
+    console.log('dateTurnedOver', dateTurnedOver);
     const inMs = today.diff(dateTurnedOver);
+    console.log('inMs', inMs);
 
     var duration = moment.duration({ milliseconds: inMs });
-    setmonthsDuration(duration._data.months);
-    const divisor = (duration._data.months + 1) * 600 - (myTotalPayments - 1000);
+    console.log('duration._data.months', duration);
+
+    const inMons = getInMons(duration._data);
+    setmonthsDuration(inMons);
+    const divisor = (inMons + 1) * 600 - (myTotalPayments - 1000);
     setTotalCollectibles(divisor);
   }, [session.myPayments]);
-
-  const onCollapse = collapsed => {
-    setCollapsed(collapsed);
-  };
 
   const columns = [
     {

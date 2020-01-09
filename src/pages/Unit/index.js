@@ -1,31 +1,15 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import moment from 'moment';
-import gql from 'graphql-tag';
 
 import { Layout, Menu, Table, Breadcrumb, Icon, Dropdown } from 'antd';
 import { checkTokenExpired } from '../../helpers/cookie';
-import _get from 'lodash/get';
-import _sumBy from 'lodash/sumBy';
+import { sumBy } from 'lodash';
 import withSession from '../../components/Session/withSession';
 import history from '../../constants/history';
 import ErrorMessage from '../../components/Error';
 import Loading from '../../components/Loading';
-
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
-
-const GET_ALL_UNITS = gql`
-  query {
-    allUnits {
-      ownerName
-      unitNo
-      dateTurnedOver
-      houseModel
-      lotArea
-    }
-  }
-`;
+import { GET_ALL_UNITS } from './query';
 
 function UnitPage({ session }) {
   const [collapsed, setCollapsed] = React.useState(false);
@@ -35,7 +19,7 @@ function UnitPage({ session }) {
     checkTokenExpired(history);
   }, []);
   React.useEffect(() => {
-    const myTotalPayments = _sumBy(session.myPayments, 'amount');
+    const myTotalPayments = sumBy(session.myPayments, 'amount');
     setTotalPayment(myTotalPayments);
   }, [session.myPayments]);
 

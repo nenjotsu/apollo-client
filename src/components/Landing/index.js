@@ -3,11 +3,9 @@ import { Route, Switch } from 'react-router-dom';
 import withAuthorization from '../Session/withAuthorization';
 import * as routes from '../../constants/routes';
 import hoaRoutes from '../App/routes';
-import AdminPage from '../Admin';
 import MainPage from '../../pages/Main';
-import SOAPage from '../../pages/SOA';
 
-const LandingPage = () => (
+const LandingPage = ({ refetch }) => (
   <Switch>
     <Route
       path={routes.LANDING}
@@ -19,6 +17,7 @@ const LandingPage = () => (
               path={route.path}
               component={route.component}
               exact={route.exact}
+              refetch={refetch}
             />
           ))}
         </MainPage>

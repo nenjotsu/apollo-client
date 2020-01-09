@@ -7,12 +7,8 @@ import withSession from '../../components/Session/withSession';
 import _get from 'lodash/get';
 import history from '../../constants/history';
 import SignOut from '../../components/SignOut';
-import SOAPage from '../SOA';
-import UnitPage from '../Unit';
-import SingleUnitPage from '../Unit/Single';
 
 const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 
 const menu = (
   <Menu>
@@ -61,6 +57,14 @@ function SiderDemo({ session, children }) {
               <Icon type="form" />
               <span>
                 <Link to={routes.PAYMENT}>Payments</Link>
+              </span>
+            </Menu.Item>
+          )}
+          {isAdmin && (
+            <Menu.Item key="4">
+              <Icon type="user-add" />
+              <span>
+                <Link to={routes.SIGN_UP}>User Register</Link>
               </span>
             </Menu.Item>
           )}
