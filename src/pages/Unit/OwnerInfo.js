@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import moment from 'moment';
-import gql from 'graphql-tag';
 
 import { Tag } from 'antd';
 import { checkTokenExpired } from '../../helpers/cookie';
@@ -12,19 +11,7 @@ import withSession from '../../components/Session/withSession';
 import history from '../../constants/history';
 import ErrorMessage from '../../components/Error';
 import Loading from '../../components/Loading';
-
-export const GET_OWNER_INFO = gql`
-  query($unitNo: String!) {
-    unit(unitNo: $unitNo) {
-      id
-      unitNo
-      houseModel
-      dateTurnedOver
-      ownerName
-      lotArea
-    }
-  }
-`;
+import { GET_OWNER_INFO } from './query';
 
 function OwnerInfo({ unitNo }) {
   // const queryParams = location.pathname.replace('/', '').split('/');
